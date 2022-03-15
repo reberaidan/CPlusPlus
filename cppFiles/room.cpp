@@ -29,9 +29,6 @@ class room{
         void print(){
             std::cout << getNum() << " " << getName() << "\n";
         }
-        
-
-
 };
 int main(){
     room Bedroom;
