@@ -2,7 +2,7 @@
 
 int main(){
 
-    std::cout << "Enter you current age.\n";
+    printf("Enter you current age.\n");
 
     int age;
     std::cin >> age;
