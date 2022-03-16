@@ -59,7 +59,6 @@ class car: public vehicle {
     
         void print(){
             cout << "Type: " << type << "\nMake: " << getBrand() << "\nModel: " << getModel() << "\nYear: " << getYear() << "\n";
-            printf("Type: %s", getType());
         }
 };
 
