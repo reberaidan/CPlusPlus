@@ -1,13 +1,15 @@
 #include <iostream>
 #include <string>
 #include <cstring>
-#include <list>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
 class room{
     private:
         string name;
-        list<string> items;
+        vector <string> items;
+        
     public:
         room(string n){
             name = n;
@@ -23,22 +25,27 @@ class room{
             return name;
         }
 
-        list<string> getList(){
+        vector<string> getList(){
             return items;
         }
 
         void addItem(string s){
-            items.push_front(s);
+            items.push_back(s);
         }
 
         void delItem(string s){
-            items.remove(s);
+            items.erase(remove(items.begin(), items.end(), s), items.end());
         }
 
-        void printlist(){
-            for (auto it = items.cbegin(); it != items.cend(); it++) {
-                cout << *it << endl;
-    }
+        string printlist(){
+            string s;
+            s += items.size();
+            for(int i = 0; i < items.size(); i++){
+                s += "We're working before";
+                s += items[i] + ' ';
+                s += "We're working after";
+            }
+            return s;
         }
         void print(){
             cout << getName() << "\n";
@@ -48,15 +55,15 @@ class room{
 
 
 int main(){
-    room room1("Hallway");
+    room Bedroom("Bedroom");
 
-    room1.addItem("Headphones");
-    room1.addItem("Keys");
-    room1.addItem("Cups");
 
-    cout << room1.printlist();
-    
-   
+    Bedroom.print();
 
+    std::string name;
+    std::cin >> name;
+
+    Bedroom.setName(name);
+    Bedroom.print();
 }
 

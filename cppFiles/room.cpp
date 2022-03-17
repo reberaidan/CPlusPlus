@@ -1,4 +1,4 @@
-#include <iostream>
+/*#include <iostream>
 #include <string>
 #include <cstring>
 
@@ -44,3 +44,4 @@ int main(){
     Bedroom.setName(name);
     Bedroom.print();
 }
+*/

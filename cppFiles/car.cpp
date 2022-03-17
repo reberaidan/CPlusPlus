@@ -50,7 +50,7 @@ class car: public vehicle {
     public:
         car(string x, string y, int z) :
             vehicle(x,y,z){
-                type = "car";
+                type = "Car";
             }
         
         string getType(){
@@ -59,6 +59,7 @@ class car: public vehicle {
     
         void print(){
             cout << "Type: " << type << "\nMake: " << getBrand() << "\nModel: " << getModel() << "\nYear: " << getYear() << "\n";
+            
         }
 };
 
