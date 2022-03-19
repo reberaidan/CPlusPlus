@@ -5,13 +5,16 @@
 #include <algorithm>
 using namespace std;
 
+
+void createRooms();
+
 class room{
     private:
         string name;
         vector <string> items;
         
     public:
-        room(string n){
+        room(string n="Room"){
             name = n;
         }
 
@@ -37,33 +40,36 @@ class room{
             items.erase(remove(items.begin(), items.end(), s), items.end());
         }
 
-        string printlist(){
-            string s;
-            s += items.size();
+        void printlist(){
+            cout << "The room contains: " << items.size() << " item(s):\n";
             for(int i = 0; i < items.size(); i++){
-                s += "We're working before";
-                s += items[i] + ' ';
-                s += "We're working after";
+                cout << items[i] << ' ';
             }
-            return s;
+            cout << "\n";
         }
         void print(){
-            cout << getName() << "\n";
+            cout << "You are in: " << getName() << "\n";
+            printlist();
         }
 };
 
-
+room currentRoom;
+room room1;
+room room2;
+room room3;
+room room4;
+room room5;
 
 int main(){
-    room Bedroom("Bedroom");
+    createRooms();
+    currentRoom.print();
+}
 
+void createRooms(){
+    room1.addItem("Bed");
+    room1.addItem("Closet");
+    room1.addItem("Key");
 
-    Bedroom.print();
-
-    std::string name;
-    std::cin >> name;
-
-    Bedroom.setName(name);
-    Bedroom.print();
+    currentRoom = room1;
 }
 
