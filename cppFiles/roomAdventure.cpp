@@ -14,7 +14,7 @@ class room{
     private:
         string name;
         vector <string> items;
-        vector <string> exits;
+        vector <exit> exits;
         
     public:
         room(string n="Room"){
@@ -35,11 +35,11 @@ class room{
             return items;
         }
 
-        void addExit(string r){
+        void addExit(room r){
             exits.push_back(r);
         }
 
-        void delExit(string r){
+        void delExit(room r){
             exits.erase(remove(exits.begin(), exits.end(), r), exits.end());
         }
 
@@ -64,6 +64,27 @@ class room{
             cout << "You are in: " << getName() << "\n";
             printlist();
         }
+};
+
+class exit{
+    private: 
+    room pos;
+    
+    public;
+    exit(room r){
+        pos = r;
+    };
+    
+    //setter
+    void setRoom(room r){
+        pos = r;
+    } 
+    
+    // getter
+    room getRoom(){
+        return pos;
+    }
+    
 };
 
 room currentRoom;
@@ -97,7 +118,7 @@ void createRooms(){
     room1.addItem("Bed");
     room1.addItem("Closet");
     room1.addItem("Key");
-    room1.addExit(room2.getName());
+    room1.addExit(room2);
 
 
     currentRoom = room1;
