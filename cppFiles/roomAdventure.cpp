@@ -3,6 +3,8 @@
 #include <cstring>
 #include <vector>
 #include <algorithm>
+#include <fstream>
+#include <cstdlib>
 using namespace std;
 
 
@@ -12,6 +14,7 @@ class room{
     private:
         string name;
         vector <string> items;
+        vector <string> exits;
         
     public:
         room(string n="Room"){
@@ -31,6 +34,16 @@ class room{
         vector<string> getList(){
             return items;
         }
+
+        void addExit(string r){
+            exits.push_back(r);
+        }
+
+        void delExit(string r){
+            exits.erase(remove(exits.begin(), exits.end(), r), exits.end());
+        }
+
+        //item system for the rooms
 
         void addItem(string s){
             items.push_back(s);
@@ -59,16 +72,33 @@ room room2;
 room room3;
 room room4;
 room room5;
+vector<room> allRooms = {room1,room2,room3,room4,room5};
 
 int main(){
+    string input;
+    string string_split = " ";
     createRooms();
     currentRoom.print();
+
+    while(1){
+        getline(cin, input);
+
+        transform(input.begin(), input.end(), input.begin(),
+            [](unsigned char c){ return tolower(c); });
+        if(input=="exit"){
+            break;
+        }
+        cout << "You're input is: " << input << endl;
+    }
 }
 
 void createRooms(){
+    room1.setName("Bedroom");
     room1.addItem("Bed");
     room1.addItem("Closet");
     room1.addItem("Key");
+    room1.addExit(room2.getName());
+
 
     currentRoom = room1;
 }
