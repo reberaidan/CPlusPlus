@@ -5,16 +5,18 @@
 #include <algorithm>
 #include <fstream>
 #include <cstdlib>
+#include <sstream>
 using namespace std;
 
 
 void createRooms();
+vector<string> split(string str, char delim);
 
 class room{
     private:
         string name;
         vector <string> items;
-        vector <exit> exits;
+        vector <string> exits;
         
     public:
         room(string n="Room"){
@@ -35,11 +37,11 @@ class room{
             return items;
         }
 
-        void addExit(room r){
+        void addExit(string r){
             exits.push_back(r);
         }
 
-        void delExit(room r){
+        void delExit(string r){
             exits.erase(remove(exits.begin(), exits.end(), r), exits.end());
         }
 
@@ -66,26 +68,7 @@ class room{
         }
 };
 
-class exit{
-    private: 
-    room pos;
-    
-    public;
-    exit(room r){
-        pos = r;
-    };
-    
-    //setter
-    void setRoom(room r){
-        pos = r;
-    } 
-    
-    // getter
-    room getRoom(){
-        return pos;
-    }
-    
-};
+
 
 room currentRoom;
 room room1;
@@ -97,19 +80,37 @@ vector<room> allRooms = {room1,room2,room3,room4,room5};
 
 int main(){
     string input;
-    string string_split = " ";
     createRooms();
     currentRoom.print();
+
+    vector<string> split_input;
+    
 
     while(1){
         getline(cin, input);
 
         transform(input.begin(), input.end(), input.begin(),
             [](unsigned char c){ return tolower(c); });
-        if(input=="exit"){
+        
+        split_input = split(input, ' ');
+
+        if(split_input.front()=="exit"){
             break;
         }
-        cout << "You're input is: " << input << endl;
+
+        
+        if(split_input.front()=="go"){
+            cout << split_input.front() << endl;
+        }
+        else if(split_input.front()=="look"){
+            cout << split_input.front() << endl;
+        }
+        else if(split_input.front()=="grab"){
+            cout << split_input.front() << endl;
+        }
+        else{
+            cout << "Please type a proper input. " << endl;
+        }
     }
 }
 
@@ -118,9 +119,21 @@ void createRooms(){
     room1.addItem("Bed");
     room1.addItem("Closet");
     room1.addItem("Key");
-    room1.addExit(room2);
+    room1.addExit(room2.getName());
 
 
     currentRoom = room1;
 }
+
+vector<string> split(string str, char delimiter) { 
+  vector<string> internal; 
+  stringstream ss(str); // Turn the string into a stream. 
+  string tok; 
+ 
+  while(getline(ss, tok, delimiter)) { 
+    internal.push_back(tok); 
+  } 
+ 
+  return internal; 
+} 
 
