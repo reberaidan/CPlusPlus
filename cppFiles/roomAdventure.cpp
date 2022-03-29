@@ -13,14 +13,14 @@ void createRooms();
 vector<string> split(string str, char delim);
 
 class room{
-    private:
+    protected:
         string name;
         vector <string> items;
         vector <string> exits;
         
     public:
-        room(string n="Room"){
-            name = n;
+        room(){
+            
         }
 
         //setters
@@ -30,7 +30,7 @@ class room{
 
         //getters
         string getName(){
-            return name;
+            return this->name;
         }
 
         vector<string> getList(){
@@ -45,6 +45,16 @@ class room{
             exits.erase(remove(exits.begin(), exits.end(), r), exits.end());
         }
 
+        bool exitExists(string s){
+            exits.begin();
+            for (unsigned i=0; i<exits.size();i++){
+                if(exits.at(i)==s){
+                    return true;
+                }
+            }
+            return false;
+        }
+
         //item system for the rooms
 
         void addItem(string s){
@@ -53,6 +63,16 @@ class room{
 
         void delItem(string s){
             items.erase(remove(items.begin(), items.end(), s), items.end());
+        }
+
+        bool itemExists(string s){
+            items.begin();
+            for (unsigned i=0; i<items.size();i++){
+                if(items.at(i)==s){
+                    return true;
+                }
+            }
+            return false;
         }
 
         void printlist(){
@@ -76,7 +96,7 @@ room room2;
 room room3;
 room room4;
 room room5;
-vector<room> allRooms = {room1,room2,room3,room4,room5};
+room allRooms[5]= {room1,room2,room3,room4,room5};
 
 int main(){
     string input;
@@ -97,10 +117,26 @@ int main(){
         if(split_input.front()=="exit"){
             break;
         }
-
+        cout << "room 2 name: " << room2.getName() << endl;
         
         if(split_input.front()=="go"){
-            cout << split_input.front() << endl;
+            if(split_input.size()==1){
+                cout << "Please input a location" << endl;
+            }
+            else if(currentRoom.exitExists(split_input.at(1))){
+                for (auto &i : allRooms){
+                    i.print();
+                    if(split_input.at(1)==i.getName()){
+                        currentRoom = i;
+                        cout << "Room Changed" << endl;
+                        currentRoom.print();
+                    }
+                }
+            }
+            else{
+                cout << "Room does not exist" << endl;
+            }
+            
         }
         else if(split_input.front()=="look"){
             cout << split_input.front() << endl;
@@ -115,10 +151,12 @@ int main(){
 }
 
 void createRooms(){
-    room1.setName("Bedroom");
+    room1.setName("bedroom");
     room1.addItem("Bed");
     room1.addItem("Closet");
     room1.addItem("Key");
+
+    room2.setName("kitchen");
     room1.addExit(room2.getName());
 
 
