@@ -6,21 +6,27 @@
 #include <fstream>
 #include <cstdlib>
 #include <sstream>
+#include <map>
 using namespace std;
 
 
 void createRooms();
 vector<string> split(string str, char delim);
 
+enum class Direction
+{
+  East, South, West, North, Up, Down
+};
 class room{
-    protected:
+    private:
         string name;
         vector <string> items;
-        vector <string> exits;
+        map<Direction, room> exits;
         
     public:
-        room(){
-            
+    
+        room(string n){
+            name = n;
         }
 
         //setters
@@ -37,22 +43,17 @@ class room{
             return items;
         }
 
-        void addExit(string r){
-            exits.push_back(r);
+        void addExit(Direction dir,room r){
+            exits.insert(pair<Direction,room>(dir,r));
         }
 
-        void delExit(string r){
-            exits.erase(remove(exits.begin(), exits.end(), r), exits.end());
+        void delExit(Direction dir){
+            exits.erase(dir);
         }
 
-        bool exitExists(string s){
-            exits.begin();
-            for (unsigned i=0; i<exits.size();i++){
-                if(exits.at(i)==s){
-                    return true;
-                }
-            }
-            return false;
+        room& getExit(Direction dir){
+            
+            return exits.at(dir);
         }
 
         //item system for the rooms
@@ -88,16 +89,16 @@ class room{
         }
 };
 
-
-
-room currentRoom;
-room room1;
-room room2;
-room room3;
-room room4;
-room room5;
+room room1("bedroom");
+room room2("kitchen");
+room room3("hallway");
+room room4("garage");
+room room5("study");
 room allRooms[5]= {room1,room2,room3,room4,room5};
 
+string dir[6] = {"east","south","west","north","up","down"};
+
+room& currentRoom = room1;
 int main(){
     string input;
     createRooms();
@@ -117,24 +118,17 @@ int main(){
         if(split_input.front()=="exit"){
             break;
         }
-        cout << "room 2 name: " << room2.getName() << endl;
         
         if(split_input.front()=="go"){
             if(split_input.size()==1){
                 cout << "Please input a location" << endl;
             }
-            else if(currentRoom.exitExists(split_input.at(1))){
-                for (auto &i : allRooms){
-                    i.print();
-                    if(split_input.at(1)==i.getName()){
-                        currentRoom = i;
-                        cout << "Room Changed" << endl;
-                        currentRoom.print();
-                    }
+            for(int i =0; i < sizeof(dir); i++){
+                if(split_input[1]==dir[i]){
+                    currentRoom = currentRoom.getExit(Direction(i));
+                    break;
                 }
-            }
-            else{
-                cout << "Room does not exist" << endl;
+                
             }
             
         }
@@ -156,8 +150,17 @@ void createRooms(){
     room1.addItem("Closet");
     room1.addItem("Key");
 
+    room2.addItem("Bottles");
+
+    room3.addItem("Rug");
+
     room2.setName("kitchen");
-    room1.addExit(room2.getName());
+    
+    room1.addExit(Direction(0), room3);
+
+    room3.addExit(Direction(2), room1);
+
+    
 
 
     currentRoom = room1;
