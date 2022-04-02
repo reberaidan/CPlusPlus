@@ -22,6 +22,7 @@ class room{
         string name;
         vector <string> items;
         map<Direction, room> exits;
+        map<Direction, room>::iterator it;
         
     public:
     
@@ -53,7 +54,15 @@ class room{
 
         room& getExit(Direction dir){
             
-            return exits.at(dir);
+            it = exits.find(dir);
+            if(it==exits.end()){
+                cout << "There is no room that way" << endl;
+                return *this;
+            }
+            else{
+                cout << "Changing rooms" << endl;
+                return exits.at(dir);
+            }
         }
 
         //item system for the rooms
@@ -121,14 +130,21 @@ int main(){
         
         if(split_input.front()=="go"){
             if(split_input.size()==1){
-                cout << "Please input a location" << endl;
+                cout << "Please input a direction. Example: go east" << endl;
             }
-            for(int i =0; i < sizeof(dir); i++){
-                if(split_input[1]==dir[i]){
-                    currentRoom = currentRoom.getExit(Direction(i));
-                    break;
+            else{
+                for(int i =0; i < sizeof(dir); i++){
+                    if(split_input[1]==dir[i]){
+                        cout << dir[i] << endl;
+                        currentRoom = currentRoom.getExit(Direction(i));
+                        currentRoom.print();
+                        break;
+                    }
+                    else if(i==sizeof(dir)-1){
+                        cout << "This direction does not exist." << endl;
+                    }
+                    
                 }
-                
             }
             
         }
