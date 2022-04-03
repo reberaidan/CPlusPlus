@@ -92,8 +92,14 @@ class room{
             }
             cout << "\n";
         }
+        void printExits(){
+            for(auto i = exits.begin(); i != exits.end(); i++){
+                cout << i->second.getName() <<endl;
+            }
+        }
         void print(){
             cout << "You are in: " << getName() << "\n";
+            printExits();
             printlist();
         }
 };
@@ -107,11 +113,11 @@ room allRooms[5]= {room1,room2,room3,room4,room5};
 
 string dir[6] = {"east","south","west","north","up","down"};
 
-room& currentRoom = room1;
+room* currentRoom = &room1;
 int main(){
     string input;
     createRooms();
-    currentRoom.print();
+    currentRoom->print();
 
     vector<string> split_input;
     
@@ -133,11 +139,19 @@ int main(){
                 cout << "Please input a direction. Example: go east" << endl;
             }
             else{
+                cout << "Starting for Loop: ";
                 for(int i =0; i < sizeof(dir); i++){
+                    cout << i << " ";
                     if(split_input[1]==dir[i]){
                         cout << dir[i] << endl;
-                        currentRoom = currentRoom.getExit(Direction(i));
-                        currentRoom.print();
+                        room temp = currentRoom->getExit(Direction(i));
+                        for(room &allRooms : allRooms){
+                            cout << "Comparing rooms: ";
+                            if(&temp==&allRooms){
+                                currentRoom = &allRooms;
+                            }
+                        }
+                        currentRoom->print();
                         break;
                     }
                     else if(i==sizeof(dir)-1){
@@ -145,6 +159,7 @@ int main(){
                     }
                     
                 }
+                cout << endl;
             }
             
         }
@@ -161,7 +176,6 @@ int main(){
 }
 
 void createRooms(){
-    room1.setName("bedroom");
     room1.addItem("Bed");
     room1.addItem("Closet");
     room1.addItem("Key");
@@ -170,16 +184,15 @@ void createRooms(){
 
     room3.addItem("Rug");
 
-    room2.setName("kitchen");
     
     room1.addExit(Direction(0), room3);
+    room1.addExit(Direction(1), room5);
 
     room3.addExit(Direction(2), room1);
 
-    
+    room5.addExit(Direction(3), room1);
 
-
-    currentRoom = room1;
+    currentRoom = &room1;
 }
 
 vector<string> split(string str, char delimiter) { 
